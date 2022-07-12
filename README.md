@@ -1,32 +1,19 @@
 # Click Farmer
 
-Make sure to read the "Additional Notes" section at the bottom for some important
-information.
+•	A web application that keeps track of how many clicks you give between multiple choices. 
+•      Uses Go for the backend and JavaScript for the API.
+•      Adopts web responsive design.
+•	Built a webserver that maintains a local cache of click counts and periodically syncs these values with the database, to precisely collect clicks with low load.
 
 ## The Problem
 
 The click farming business has really taken off recently.
 
 The original click farming engineers started this project to count the number of
-clicks around the world. However, they left to start another business.
-
-They created a design document that describes how the system works, but they never
-got around to finishing. We're not quite sure whether everything is correct either.
-
-They say the system they left for you consists of a core database service they
-wrote. In addition, they wrote a webserver. They expect to run many webservers
-against one database concurrently, to handle the clickfarming load.
-
-In the database folder you'll find the RPC server implementation that handles
-database requests.
-
-In the webserver folder you'll find the HTTP handlers and code which talks to
-the database using protobuf + grpc defined in the pb folder.
-
-In the docs folder you'll find the design document that the click farming
-engineers wrote.
+clicks around the world.
 
 The goal is to get the product working to farm upvotes from around the world.
+
 
 ## Building and Running
 
@@ -58,7 +45,7 @@ serve the website on. This is used to run multiple web servers, like:
 ./clickfarmer webserver -a :3003
 ```
 
-Note that you can also run the database and webserver without the `build` step
+You can also run the database and webserver without the `build` step
 by running the `main.go` file directly:
 
 ```
@@ -72,7 +59,7 @@ instead of `3000`).
 
 ## Generating Protobufs
 
-You will need to install the protobuf compiler:
+Install the protobuf compiler:
 
 https://grpc.io/docs/protoc-installation/
 
@@ -88,10 +75,8 @@ To re-generate the protobuf code after changing `pb/clicktracking.proto`, run:
 go generate ./pb/...
 ```
 
-## Additional Notes
+## Api
 
-In order to get full credit you must make sure the following endpoints work
-on the webserver API:
 ```
 GET /api/clicks/red -> returns a single integer representing total red button clicks (`0`)
 GET /api/clicks/green -> returns a single integer representing total green button clicks
@@ -102,21 +87,4 @@ PUT /api/clicks/green -> called when the green button was clicked once. no retur
 PUT /api/clicks/blue -> called when the blue button was clicked once. no return data
 ```
 
-You must match this behavior for all of these endpoints - we use them to test
-your solution.
-
-You also must keep the same command line functionality. Our testing software
-expects to be able to start a webserver like
-`./clickfarmer webserver -a :port` and expects to start a database like
-`./clickfarmer database`. It expects that each webserver syncs with the database
-every 1 second.
-
-You must keep the webserver/database architecture. Our testing software expects
-to run multiple webservers against a database. However, you can do whatever
-you want in terms of the webserver and database's internal logic, as well as the
-messages and RPC functions they use to communicate.
-
-There are two components to your homework evaluation:
-* Backend - we will run automated tests to determine whether your API is able to correctly handle requests, including when multiple APIs are running against the same database
-* Frontend - we will look at the html page served by your web server and assign points based on responsiveness to different screen sizes, and design decisions such as color and element spacing/positioning
 
